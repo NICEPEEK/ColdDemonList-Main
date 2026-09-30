@@ -2,16 +2,17 @@
     {
         "role": "owner",
         "name": "roma333",
-        "link": "https://www.youtube.com/@sayashyne"
+        "link": ""
+    },
+
+        {
+        "role": "admin",
+        "name": "brnlggg",
+        "link": "https://www.youtube.com/@%D0%B1%D0%BB%D0%BA%D0%BD"
     },
     {
         "role": "dev",
         "name": "NICEPEEK",
         "link": "https://www.youtube.com/@nicepeekGD"
-    },
-        {
-        "role": "dev",
-        "name": "blnggg",
-        "link": ""
     }
 ]
