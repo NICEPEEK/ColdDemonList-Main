@@ -1,0 +1,37 @@
+{
+    "id": 295,
+    "name": "Sigma",
+    "author": "brnlggg",
+    "creators": ["brnlggg"],
+    "verifier": "SalamanderX",
+    "verification": "https://www.youtube.com/watch?v=n0ZMwH0pAMY",
+    "tags": ["Wave"],
+    "percentToQualify": 40,
+    "verifiedDate": "19.08.2026",
+    "records": [
+                {
+            "user": "NICEPEEK",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "UnluckGMD",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "Axelleron",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "brnlggg",
+            "link": "",
+            "percent": 42,
+            "date": "??.09.2026"
+        }
+    ]
+}

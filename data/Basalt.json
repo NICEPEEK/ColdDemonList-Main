@@ -1,0 +1,26 @@
+{
+    "id": 361,
+    "name": "Basalt",
+    "author": "brnlggg",
+    "creators": ["brnlggg"],
+    "verifier": "NICEPEEK",
+    "verification": "https://www.youtube.com/watch?v=h5obGADsE9E",
+    "tags": ["Timing"],
+    "percentToQualify": 100,
+    "verifiedDate": "20.09.2026",
+    "records": [     
+           {
+            "user": "CBODEMON333",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "brnlggg",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        }
+
+    ]
+}

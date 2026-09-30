@@ -1,0 +1,37 @@
+{
+    "id": 240,
+    "name": "Crimson Circles",
+    "author": "brnlggg",
+    "creators": ["brnlggg"],
+    "verifier": "brnlggg",
+    "verification": "https://www.youtube.com/watch?v=X9UsnMbuKl4",
+    "tags": ["Timing", "Wave"],
+    "percentToQualify": 50,
+    "verifiedDate": "14.08.2026",
+    "records": [
+                {
+            "user": "UnluckGMD",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "NICEPEEK",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "Axelleron",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "f1n3tes",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        }
+    ]
+}

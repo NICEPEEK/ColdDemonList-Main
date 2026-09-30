@@ -1,0 +1,39 @@
+{
+    "discord": "https://discord.gg/yvqmVagArF",
+    "submitRecord": {
+        "enabled": false,
+        "link": ""
+    },
+    "scoring": {
+        "B1": 7.143,
+        "g": 1.6,
+        "s": 0.4,
+        "d": 0.9
+    },
+    "globalDemonlist": {
+        "enabled": false,
+        "logo": "assets/global-list-uhd.png"
+    },
+    "colors": {
+        "light": {
+            "background": "#ffffff",
+            "on-background": "#000000",
+            "background-hover": "#eeeeee",
+            "on-background-hover": "#000000",
+            "primary": "#2e7d32",
+            "on-primary": "#ffffff",
+            "error": "#de0000",
+            "on-error": "#ffffff"
+        },
+        "dark": {
+            "background": "#1c1b1f",
+            "on-background": "#ffffff",
+            "background-hover": "#27262c",
+            "on-background-hover": "#ffffff",
+            "primary": "#1b5e20",
+            "on-primary": "#ffffff",
+            "error": "#de0000",
+            "on-error": "#ffffff"
+        }
+    }
+}

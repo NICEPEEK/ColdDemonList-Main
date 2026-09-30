@@ -1,0 +1,220 @@
+import { store } from "../main.js";
+import { embed, countryToFlag, localize } from "../util.js";
+import { fetchList, fetchFlags, fetchEditors, fetchGdlPositions, fetchConfig } from "../content.js";
+import { phaseLabel, phaseStyles } from "../phases.js";
+
+import Spinner from "../components/Spinner.js";
+import LevelAuthors from "../components/List/LevelAuthors.js";
+
+const roleIconMap = {
+    owner: "crown",
+    admin: "user-gear",
+    helper: "user-shield",
+    dev: "code",
+    trial: "user-lock",
+};
+
+export default {
+    components: { Spinner, LevelAuthors },
+    template: `
+        <main v-if="loading">
+            <Spinner></Spinner>
+        </main>
+        <main v-else class="page-list">
+            <div class="mobile-tabs" v-if="store.mobile">
+                <button :class="{ active: mobileTab === 'list' }" @click="mobileTab = 'list'">List</button>
+                <button :class="{ active: mobileTab === 'level' }" @click="mobileTab = 'level'">Level</button>
+            </div>
+            <div class="list-container" v-show="!store.mobile || mobileTab === 'list'">
+                <div class="errors" v-show="errors.length > 0">
+                    <p class="error" v-for="error of errors">{{ error }}</p>
+                </div>
+                <input class="search" type="text" v-model="search" placeholder="Search levels..." />
+                <table class="list" v-if="list">
+                    <tr v-for="([level, err], i) in list" v-show="!search || (level && level.name.toLowerCase().includes(search.toLowerCase()))">
+                        <td class="rank">
+                            <p class="type-label-lg">#{{ i + 1 }}</p>
+                        </td>
+                        <td class="level" :class="{ 'active': selected == i, 'error': !level }">
+                            <button @click="selected = i" :style="activeRowStyle(level, i)">
+                                <span class="type-label-lg">{{ level?.name || \`Error (\${err}.json)\` }}</span>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="level-container" v-show="!store.mobile || mobileTab === 'level'">
+                <div class="level" v-if="level">
+                    <h1>
+                        {{ level.name }}
+                        <span v-if="gdlPlacement && gdlLogo" class="gdl-badge">
+                            ( <img :src="gdlLogo" alt="Global Demonlist" class="gdl-logo" />
+                            #{{ gdlPlacement }} )
+                        </span>
+                    </h1>
+                    <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier" :verifierFlag="flags[level.verifier] ? countryToFlag(flags[level.verifier]) : null"></LevelAuthors>
+                    <div class="tags">
+                        <span class="tag tag--phase" :style="phaseTagStyle">{{ phaseLabel }}</span>
+                        <span v-for="tag in (level.tags || [])" class="tag">{{ tag }}</span>
+                    </div>
+                    <iframe class="video" id="videoframe" :src="video" frameborder="0"></iframe>
+                    <ul class="stats">
+                        <li>
+                            <div class="type-title-sm">Points</div>
+                            <p>{{ localize(level.score) }}</p>
+                        </li>
+                        <li>
+                            <div class="type-title-sm">ID</div>
+                            <p>{{ level.id }}</p>
+                        </li>
+                        <li>
+                            <div class="type-title-sm">Verified</div>
+                            <p>{{ level.verifiedDate }}</p>
+                        </li>
+                    </ul>
+                    <h2>Records</h2>
+                    <p><strong>{{ level.percentToQualify }}%</strong> or better to qualify</p>
+                    <table class="records">
+                        <tr v-for="record in level.records" class="record">
+                            <td class="percent">
+                                <p>{{ record.percent }}%</p>
+                            </td>
+                            <td class="user">
+                                <span class="type-label-lg username" @click="goToPlayer(record.user)"><template v-if="flags[record.user]">{{ countryToFlag(flags[record.user]) }}&ensp;</template>{{ record.user }}</span>
+                            </td>
+                            <td class="mobile">
+                                <img v-if="record.mobile" :src="\`assets/phone-landscape\${store.dark ? '-dark' : ''}.svg\`" alt="Mobile">
+                            </td>
+                            <td class="date">
+                                <p>{{ record.date }}</p>
+                            </td>
+                            <td class="video-link">
+                                <a :href="record.link" target="_blank">
+                                    <img :src="\`assets/youtube\${store.dark ? '-dark' : ''}.svg\`" alt="Video">
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div v-else class="level" style="height: 100%; justify-content: center; align-items: center;">
+                    <p>(ノಠ益ಠ)ノ彡┻━┻</p>
+                </div>
+            </div>
+            <div class="meta-container" v-show="!store.mobile">
+                <div class="meta">
+                    <div class="og">
+                        <p class="type-label-md">Website layout made by <a href="https://tsl.pages.dev/" target="_blank">TheShittyList</a></p>
+                    </div>
+                    <template v-if="editors">
+                        <h3>List Editors</h3>
+                        <ol class="editors">
+                            <li v-for="editor in editors">
+                                <img :src="\`assets/\${roleIconMap[editor.role]}\${store.dark ? '-dark' : ''}.svg\`" :alt="editor.role">
+                                <a v-if="editor.link" class="type-label-lg link" target="_blank" :href="editor.link">{{ editor.name }}</a>
+                                <p v-else>{{ editor.name }}</p>
+                            </li>
+                        </ol>
+                    </template>
+                    <h3>Submission Requirements</h3>
+                    <p>
+                        Using modifications that make levels easier is prohibited. This includes Noclip, Speed Hack, and similar cheats.
+                    </p>
+                    <p>
+                        Using nerfed versions of a level is prohibited.
+                    </p>
+                    <p>
+                        Using secret routes or bug routes is prohibited.
+                    </p>
+                    <p>
+                        To submit a record, you must provide a completion video featuring a cheat indicator, audible clicks, and the end screen.
+                    </p>
+                    <p>
+                        Your completion video must be either publicly available or accessible via a link.
+                    </p>
+                </div>
+            </div>
+        </main>
+    `,
+    data: () => ({
+        list: [],
+        editors: [],
+        flags: {},
+        gdlPositions: {},
+        gdlLogo: '',
+        loading: true,
+        selected: 0,
+        errors: [],
+        search: '',
+        mobileTab: 'list',
+        roleIconMap,
+        store
+    }),
+    watch: {
+        selected() {
+            if (store.mobile) {
+                this.mobileTab = 'level';
+            }
+        },
+    },
+    computed: {
+        level() {
+            return this.list[this.selected][0];
+        },
+        phaseLabel() {
+            return this.level ? phaseLabel(this.level.phase) : '';
+        },
+        phaseTagStyle() {
+            return this.level ? phaseStyles(this.level.phase) : {};
+        },
+        video() {
+            const videoUrl = this.level?.verification || this.level?.showcase || '';
+            return embed(videoUrl);
+        },
+        gdlPlacement() {
+            if (!this.level?.id) return null;
+            return this.gdlPositions[this.level.id] ?? null;
+        },
+    },
+    async mounted() {
+        this.list = await fetchList();
+        this.editors = await fetchEditors();
+        this.flags = await fetchFlags();
+
+        const config = await fetchConfig();
+        this.gdlLogo = config.globalDemonlist?.logo || '';
+        if (config.globalDemonlist?.enabled) {
+            this.gdlPositions = await fetchGdlPositions(this.list);
+        }
+
+        if (!this.list) {
+            this.errors = [
+                "Failed to load list. Retry in a few minutes or notify list staff.",
+            ];
+        } else {
+            this.errors.push(
+                ...this.list
+                    .filter(([_, err]) => err)
+                    .map(([_, err]) => {
+                        return `Failed to load level. (${err}.json)`;
+                    })
+            );
+            if (!this.editors) {
+                this.errors.push("Failed to load list editors.");
+            }
+        }
+
+        this.loading = false;
+    },
+    methods: {
+        embed,
+        countryToFlag,
+        localize,
+        activeRowStyle(level, i) {
+            if (!level || this.selected !== i) return {};
+            return phaseStyles(level.phase);
+        },
+        goToPlayer(user) {
+            this.$router.push({ path: '/leaderboard', query: { user } });
+        },
+    },
+};

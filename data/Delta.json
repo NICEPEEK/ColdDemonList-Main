@@ -1,0 +1,43 @@
+{
+    "id": 333,
+    "name": "Delta",
+    "author": "brnlggg",
+    "creators": ["brnlggg"],
+    "verifier": "brnlggg",
+    "verification": "https://www.youtube.com/watch?v=5cqDWHye-oA",
+    "tags": ["Timing", "Wave"],
+    "percentToQualify": 48,
+    "verifiedDate": "29.09.2026",
+    "records": [   
+            {
+            "user": "Axelleron",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "NICEPEEK",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "UnluckGMD",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "akauntnotfound",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        },
+        {
+            "user": "Texa",
+            "link": "",
+            "percent": 100,
+            "date": "??.09.2026"
+        }
+    ]
+}
